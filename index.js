@@ -96,5 +96,26 @@ const add_department = () => {
 
 const add_role = () => {
 
-    //get
+    //get the departments from the database, this is for the choices list when adding the new role -jsn
+    db.getDepartments().then((results) => {
+
+        const departmentQuestion = AddRoleQuestions[2];
+        results.forEach((department) => {
+            departmentQuestion.choices.push({
+                value: department.id,
+                name: department.name
+            });
+        });
+
+        inquirer
+        .prompt(AddRoleQuestions)
+        .then((response) => {
+            db.addRole(response).then((results) => {
+                console.log('\n', results, '\n');
+                doMenuQuestions();
+            });
+        })
+    });
 }
+
+const add_employee = ()
