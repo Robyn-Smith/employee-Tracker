@@ -40,8 +40,7 @@ const AddRoleQuestions = [
         type: 'list',
         name: 'department_id',
         message: 'Please choose a department for this role',
-        choices: [
-        ],
+        choices: [],
     },
 ]
 
@@ -60,14 +59,29 @@ const AddEmployeeQuestions = [
         type: 'list',
         name: 'role_id',
         message: 'What is the new employee\'s role?',
-        choices: [
-        ],
+        choices: [],
     },
     {
         type: 'list',
         name: 'manager_id',
         message: 'Please choose the new employee\'s manager',
-        choices: [
-        ],
+        choices: [],
     },
 ]
+
+const UpdateEmployeeRoleQuestions = [
+    {
+        type: 'list',
+        name: 'employee_id',
+        message: 'please choose an employee to update',
+        choices: [],
+    },
+    {
+        type: 'list',
+        name: 'role_id',
+        message: 'please choose emplyee\'s new role',
+        choices: [],
+    },
+]
+
+module.exports = { MainMenuQuestions, AddDepartmentQuestions, AddRoleQuestions, AddEmployeeQuestions, UpdateEmployeeRoleQuestions }
