@@ -43,3 +43,58 @@ const doMenuQuestions = () => {
             break;
     }})
 }
+
+const view_departments = () => {
+
+    //get the departments from the database-jsn
+    db.getDepartments().then((results) => {
+
+        //show the results in console-jsn
+        console.table(results);
+
+        //show the main menu again-jsn
+        doMenuQuestions();
+    });
+}
+
+const view_roles = () => {
+
+    //get the departments from the database - jsn
+    db.getRoles().then((results) => {
+
+        //show the results in the console-jsn
+        console.table(results);
+
+        //show the main menu again-jsn
+        doMenuQuestions();
+    });
+}
+
+const view_employees = () => {
+
+    //get the departments from the database-jsn
+    db.getEmployees().then((results) => {
+
+        //show the results in console-jsn
+        console.table(results);
+
+        //show the main menu again-jsn
+        doMenuQuestions();
+    });
+}
+
+const add_department = () => {
+    inquirer
+    .prompt(AddDepartmentQuestions)
+    .then((response) => {
+        db.addDepartment(response).then((results) => {
+            console.log('\n', results, '\n');
+            doMenuQuestions();
+        });
+    })
+}
+
+const add_role = () => {
+
+    //get
+}
