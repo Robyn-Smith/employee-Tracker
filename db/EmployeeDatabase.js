@@ -1,11 +1,11 @@
-const dataBase = require('./database.js');
+const DataBase = require('./Database');
 
-class EmployeeData extends dataBase {
+class EmployeeDatabase extends DataBase {
     constructor(options) {
         super(options);
     }
 
-    getdepartment() {
+    getDepartments() {
 
         return new Promise((resolve, reject) => {
             this.data.query('SELECT * FROM department', (err, results) => {
@@ -17,7 +17,7 @@ class EmployeeData extends dataBase {
         });
     }
 
-    getrole() {
+    getRoles() {
 
         return new Promise((resolve, reject) => {
             this.data.query(`SELECT role.id, role.title, CONCAT('£', FORMAT(salary, 0), 'p/a') as salary, department.name as department_name FROM role INNER JOIN Department ON role.department_id = Department.id`, (err, results) => {
@@ -30,7 +30,7 @@ class EmployeeData extends dataBase {
         });
     }
 
-    getemployee() {
+    getEmployees() {
 
         return new Promise((resolve, reject) => {
             this.data.query(
@@ -59,7 +59,7 @@ class EmployeeData extends dataBase {
     addDepartment(department) {
 
         return new Promise((resolve, reject) => {
-            this.data.query('INSERT INTO department SET ?', { name: departemnt.departemnt_name}, (err, results) => {
+            this.data.query('INSERT INTO department SET ?', { name: department.departemnt_name}, (err, results) => {
                 if (err) {
                     reject(err);
                 }
@@ -91,7 +91,7 @@ class EmployeeData extends dataBase {
         const employeeData = {
             first_name: employee.first_name,
             last_name: employee.last_name,
-            role_id: employee_id,
+            role_id: employee.role_id,
             manager_id: employee.manager_id,
         };
 
@@ -105,10 +105,10 @@ class EmployeeData extends dataBase {
         });
     }
 
-    updateRole(employee) {
+    updateEmployeeRole(employee) {
 
         return new Promise((resolve, reject) => {
-            this.data.query('UPDATE employee SET role_id=?', [employee.role_id, employee.employee_id], (err, results) => {
+            this.data.query('UPDATE employee SET role_id=? WHERE id=?', [employee.role_id, employee.employee_id], (err, results) => {
                 if(err) {
                     reject(err);
                 }
@@ -118,4 +118,4 @@ class EmployeeData extends dataBase {
     }
  }
 
- module.exports = EmployeeData;
+ module.exports = EmployeeDatabase;
