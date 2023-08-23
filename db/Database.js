@@ -9,18 +9,18 @@ class dataBase {
     validate () {
 
         const { host, user, password, database} = this.options;
-        id (!host || !user || ! database)
+        id (!host || !user || !password || ! database)
         throw new Error('Database config is invalid.');
 
         return;
     }
 
     connect () {
-
+        //validate configuration
         this.validate();
-
+        //Descructure configuration
         const { host, user, password, database} = this.options;
-
+        // Connect to database =jsn
         this.data = mysql.createConnection(
             {
                 host: host,
@@ -36,4 +36,4 @@ class dataBase {
     }
 }
 
-module.exports = dataBase;
+module.exports = DataBase;

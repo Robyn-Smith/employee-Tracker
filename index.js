@@ -118,4 +118,99 @@ const add_role = () => {
     });
 }
 
-const add_employee = ()
+const add_employee = () => {
+    data.query('SELECT * FROM roles').then(([results]) => {
+      const roleChoices = results.map((role) => ({
+        value: role.id,
+        name: role.title,
+      }));
+  
+      data.query('SELECT * FROM employees').then(([results]) => {
+        const managerChoices = results.map((employee) => ({
+          value: employee.id,
+          name: `${employee.first_name} ${employee.last_name}`,
+        }));
+  
+        managerChoices.unshift({ value: null, name: 'None' });
+  
+        inquirer
+          .createPromptModule([
+            {
+              type: 'input',
+              name: 'first_name',
+              message: 'Enter the first name of the employee:',
+            },
+            {
+              type: 'input',
+              name: 'last_name',
+              message: 'Enter the last name of the employee:',
+            },
+            {
+              type: 'list',
+              name: 'role_id',
+              message: 'Enter the role of the employee:',
+              choices: roleChoices,
+            },
+            {
+              type: 'list',
+              name: 'manager_id',
+              message: 'Enter the manager of the employee:',
+              choices: managerChoices,
+            },
+          ])
+          .then((response) => {
+            data
+              .query(
+                'INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
+                [response.first_name, response.last_name, response.role_id, response.manager_id]
+              )
+              .then(([results]) => {
+                console.log('\n', results, '\n');
+                MainMenuQuestions();
+              });
+          });
+      });
+    });
+  };
+  
+  const update_role = () => {
+    data.query('SELECT * FROM employees').then(([results]) => {
+      const employeeChoices = results.map((employee) => ({
+        value: employee.id,
+        name: `${employee.first_name} ${employee.last_name}`,
+      }));
+  
+      data.query('SELECT * FROM roles').then(([results]) => {
+        const roleChoices = results.map((role) => ({
+          value: role.id,
+          name: role.title,
+        }));
+  
+        inquirer
+          .createPromptModule([
+            {
+              type: 'list',
+              name: 'employee_id',
+              message: 'Select which employee to update below:',
+              choices: employeeChoices,
+            },
+            {
+              type: 'list',
+              name: 'role_id',
+              message: 'Select the employee\'s new role below:',
+              choices: roleChoices,
+            },
+          ])
+          .then((response) => {
+            data
+              .query('UPDATE employees SET role_id = ? WHERE id = ?', [response.role_id, response.employee_id])
+              .then(([results]) => {
+                console.log('\n', results, '\n');
+                doMenuQuestions();
+              });
+          });
+      });
+    });
+  };
+  
+  doMenuQuestions();
